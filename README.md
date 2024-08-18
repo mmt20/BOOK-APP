@@ -25,7 +25,7 @@ This project is a simple Book Management System (BMS) built using Node.js, Expre
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/book-management-system.git
+git clone https://github.com/mmt20/BOOK-APP.git
 cd book-management-system
 ```
 
