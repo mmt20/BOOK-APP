@@ -1,12 +1,18 @@
 const queries = require('../db/queries')
 const dbConnection = require('../db/connection')
 const util = require("../Util/utility")
+const Logger = require("../services/logger.service")
+const auditService = require("../audit/audit.service");
+const auditAction = require("../audit/auditAction");
+
+const logger = new Logger('bookController')
 
 exports.getBookList = async (req, res) => {
   try {
     const bookListQuery = queries.queryList.GET_BOOK_LIST_QUERY;
     const result = await dbConnection.dbQuery(bookListQuery);
-
+    logger.info("Return Book List", result.rows);
+    auditService.prepareAudit(auditAction.actionList.GET_BOOK_LIST, result.rows, null, "postman", util.dateFormat());
     return res.status(200).json(result.rows);
 
   } catch (err) {
