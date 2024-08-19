@@ -8,16 +8,18 @@ const auditAction = require("../audit/auditAction");
 const logger = new Logger('bookController')
 
 exports.getBookList = async (req, res) => {
+  let auditOn = util.dateFormat()
   try {
     const bookListQuery = queries.queryList.GET_BOOK_LIST_QUERY;
     const result = await dbConnection.dbQuery(bookListQuery);
     logger.info("Return Book List", result.rows);
-    auditService.prepareAudit(auditAction.actionList.GET_BOOK_LIST, result.rows, null, "postman", util.dateFormat());
+    auditService.prepareAudit(auditAction.actionList.GET_BOOK_LIST, result.rows, null, "postman", auditOn);
     return res.status(200).json(result.rows);
 
   } catch (err) {
 
     console.log("Error " + err);
+    auditService.prepareAudit(auditAction.actionList.GET_BOOK_LIST, null, JSON.stringify(err), "postman", auditOn);
     return res.status(500).send({ error: "Faild to Get Books 🥲" });
   }
 }
